@@ -141,6 +141,18 @@ col6.metric(
     "Average Income", f"₹ {average_income:,.2f}")
 
 
+expense_df = df[df["Type"] == "Expense"]
+
+if not expense_df.empty:
+
+    category_totals = (expense_df.groupby("Category")["Amount"].sum())
+
+    highest_category = category_totals.idxmax()
+    highest_amount = category_totals.max()
+
+    st.metric(" Highest Spending Category",highest_category,f"₹ {highest_amount:,.2f}")
+
+
 # SIDEBAR FILTER 
 
 st.sidebar.header("Filters")
@@ -190,3 +202,5 @@ daily_expense = (expense_df.groupby("Date", as_index=False)["Amount"].sum())
 line_fig = px.line(daily_expense,x="Date",y="Amount",title="Daily Expense Trend",markers=True)
 
 st.plotly_chart(line_fig, use_container_width=True)
+
+st.success("All data visualizations are based on the current transactions in the system. Add more transactions to see updated trends and distributions!")
